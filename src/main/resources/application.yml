@@ -1,0 +1,36 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: ticketflow-api
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:ticketflow}
+    username: ${DB_USER:auth_user}
+    password: ${DB_PASS:auth_pass}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    # El esquema se crea a mano con db/manual/schema_pg93.sql.
+    # Hibernate SOLO valida que el esquema coincida con las entidades; no ejecuta DDL.
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+
+# Mismo default que auth-service-jwt (HS256, secreto en Base64).
+# Sobreescribir en producción con la variable de entorno JWT_SECRET.
+jwt:
+  secret: ${JWT_SECRET:dHVjdi1hdXRoLXNlcnZpY2Utc3VwZXItc2VjcmV0LWtleS0yMDI0LWJhc2U2NA==}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+logging:
+  level:
+    com.tucv.ticketflow: INFO
